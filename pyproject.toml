@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pocketport"
+version = "0.1.0"
+description = "POCKETPort · 口袋港 — collect phone data locally for your own agent"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+license = "MIT"
+dependencies = ["mitmproxy==12.2.3", "mcp==1.30.0", "qrcode[pil]==8.2"]
+
+[project.scripts]
+pocketport = "pocketport.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["plugins/pocketport/src"]
+
+[tool.setuptools.package-data]
+pocketport = ["dashboard.html"]

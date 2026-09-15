@@ -1,0 +1,11 @@
+{
+  "name": "pocketport",
+  "version": "0.1.0",
+  "description": "Collect phone data locally via WireGuard for your own agent",
+  "author": {
+    "name": "RAGG3D",
+    "url": "https://github.com/RAGG3D"
+  },
+  "repository": "https://github.com/RAGG3D/POCKETPort",
+  "license": "MIT"
+}

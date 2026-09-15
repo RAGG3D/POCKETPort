@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>POCKETPort · 口袋港</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#19302b;background:#f3f6f1}body{max-width:960px;margin:40px auto;padding:0 24px}h1{font-size:36px;margin-bottom:8px}h2{font-size:20px}p{line-height:1.65}.muted{color:#576b65}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.card{background:white;border:1px solid #dce5dc;border-radius:18px;padding:24px;margin:20px 0}label{display:block;margin:14px 0 5px}input,select,button{font:inherit;box-sizing:border-box;border-radius:8px;padding:11px;width:100%;border:1px solid #b4c6b9}button{background:#185b46;color:white;cursor:pointer;margin-top:12px;border:0}button.secondary{background:#e9f0eb;color:#19302b}button:disabled{opacity:.45;cursor:default}#qr{display:none;width:260px;max-width:100%;margin:auto}#message{white-space:pre-wrap;overflow-wrap:anywhere;color:#814423}#status{white-space:pre-wrap}small{line-height:1.7;display:block}.session{padding:12px 0;border-top:1px solid #e3e9e3}a{color:#185b46}@media(max-width:700px){.grid{grid-template-columns:1fr}body{margin:24px auto}}
+</style>
+<header><h1>POCKETPort <span class="muted">口袋港</span></h1><p>把手机里的信息，带给自己的 AI。</p><small class="muted">采集在你的电脑进行。你决定打开哪些页面，以及把结果交给谁。</small></header>
+<div id="message" role="alert"></div>
+<div class="grid"><section class="card"><h2>1 · 开启采集</h2>
+<label for="source">这次采集什么？</label><select id="source"><option value="taobao">淘宝</option><option value="xiaohongshu">小红书</option><option value="yihe">易鹤集运小程序</option><option value="wechat-mini">其他微信小程序</option></select>
+<label for="endpoint">电脑在 Wi-Fi 下的 IPv4 地址</label><input id="endpoint" placeholder="例如 192.168.1.20">
+<small class="muted">手机和电脑连接同一 Wi-Fi。自动建议的地址仍需核对。</small>
+<label for="hosts">补充服务域名 / IP（可选）</label><input id="hosts" placeholder="api.example.com, 192.0.2.10"><small class="muted">其他小程序必须填写其实际后端域名；微信没有统一的数据采集域名。</small>
+<button id="start">开启 30 分钟采集</button><button id="stop" class="secondary">停止采集</button>
+<p id="status" aria-live="polite">正在读取状态…</p></section>
+<section class="card"><h2>2 · 手机扫码连接</h2><img id="qr" alt="仅供你的手机扫描的 WireGuard 私密配对二维码">
+<ol><li><p>在手机安装 WireGuard，选择「添加隧道 → 扫描二维码」，扫描上方二维码并开启。</p></li><li><p>首次使用：手机浏览器打开 <b>http://mitm.it</b>，安装这台电脑的证书。iPhone 还需在「设置 → 通用 → 关于本机 → 证书信任设置」开启完全信任。</p></li><li><p>打开所选 App，刷新、滚动列表，逐个打开需要的详情，观察左侧采集条数增加。</p></li></ol>
+<button id="config" class="secondary">下载手机连接配置</button><small class="muted">二维码和配置包含你的连接私钥，不要分享。连接期间 IPv4 网络经电脑转发。不要设置手机的 HTTP 代理。</small></section></div>
+<section class="card"><h2>3 · 停止并交给自己的 Agent</h2><p>完成浏览后点击「停止采集」，并关闭手机 WireGuard。下载结果后，告诉自己的 Agent 你想怎么使用数据。</p><div id="sessions"></div><small class="muted">导出内容可能包含订单、地址和联系方式；分享前请检查。未打开的页面、缓存和加密不兼容的接口可能缺失。零条记录不代表没有数据。</small></section>
+<section class="card"><h2>连接遇到问题？</h2><p>先确认同一 Wi-Fi、电脑没有休眠、UDP 51820 已被防火墙允许。mitm.it 打不开通常是网络连接问题；能打开但 App 报证书错误，可能是 App 不信任用户证书。停止采集并关闭 WireGuard 可恢复原网络路径。</p><p>Android 部分 App 不信任用户安装的 CA；此版本不提供绕过证书固定的功能。若数据一直为零，请查看下载包中的 <b>docs/USER_MANUAL.zh-CN.md</b>。</p></section>
+<script>
+const token=location.hash.slice(1)||sessionStorage.getItem('pocketport-token');
+if(token)sessionStorage.setItem('pocketport-token',token);history.replaceState(null,'','/');
+const $=id=>document.getElementById(id);let current=null,qrShown=false;
+async function api(path,args){const r=await fetch('/api/'+path,{method:args===undefined?'GET':'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:args===undefined?undefined:JSON.stringify(args)});if(!r.ok){const e=await r.json();throw Error(e.error||r.statusText)}return r}
+async function action(fn){$('message').textContent='';try{await fn()}catch(e){$('message').textContent=e.message}}
+async function download(path,name,args){const blob=await(await api(path,args)).blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+async function refresh(){const s=await(await api('status')).json();current=s.session;$('start').disabled=s.running;$('stop').disabled=!s.running;$('config').disabled=!s.running;if(!$('endpoint').value&&s.suggested_ip)$('endpoint').value=s.suggested_ip;
+$('status').textContent=(s.running?'采集中':'已停止')+' · 已保存 '+(s.capture.saved||0)+' 条\n连接错误 '+(s.capture.errors||0)+' · TLS 错误 '+(s.capture.tls_errors||0)+(s.capture.limit_reached?'\n已达 100 MB 保存上限，请停止并导出。':'');
+if(s.running&&!qrShown){const blob=await(await api('qr')).blob();$('qr').src=URL.createObjectURL(blob);$('qr').style.display='block';qrShown=true}if(!s.running&&qrShown){URL.revokeObjectURL($('qr').src);$('qr').removeAttribute('src');$('qr').style.display='none';qrShown=false}
+const sessions=await(await api('sessions')).json();$('sessions').replaceChildren();for(const entry of sessions){const div=document.createElement('div');div.className='session';const title=document.createElement('small');title.textContent=entry.source+' · '+new Date(entry.started_at).toLocaleString()+' · '+entry.state;div.append(title);const b=document.createElement('button');b.textContent='下载采集 JSON';b.className='secondary';b.disabled=entry.state==='running';b.onclick=()=>action(()=>download('export','POCKETPort-'+entry.id+'.json',{session:entry.id}));div.append(b);$('sessions').append(div)}}
+$('start').onclick=()=>action(async()=>{$('start').disabled=true;try{await api('start',{source:$('source').value,endpoint:$('endpoint').value.trim(),extra_hosts:$('hosts').value.split(/[,，\s]+/).filter(Boolean)});await refresh()}finally{$('start').disabled=false}});
+$('stop').onclick=()=>action(async()=>{await api('stop',{});await refresh()});$('config').onclick=()=>action(()=>download('config','POCKETPort-phone.conf'));
+action(refresh);setInterval(()=>action(refresh),4000);
+</script></html>

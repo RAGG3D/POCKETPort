@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.env
+*.pem
+*.p12
+*.conf
+*.jsonl
+data/
+captures/
+runtime/
+*.log
+mcp.local.json

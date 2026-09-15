@@ -1,0 +1,13 @@
+{
+  "name": "pocketport",
+  "owner": {
+    "name": "RAGG3D"
+  },
+  "plugins": [
+    {
+      "name": "pocketport",
+      "source": "./plugins/pocketport",
+      "description": "Collect phone data locally via WireGuard for your own agent"
+    }
+  ]
+}
