@@ -1,6 +1,6 @@
 {
   "name": "pocketport",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Collect phone data locally via WireGuard for your own agent",
   "author": {
     "name": "RAGG3D",

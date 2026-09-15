@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pocketport"
-version = "0.1.0"
+version = "0.1.1"
 description = "POCKETPort · 口袋港 — collect phone data locally for your own agent"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"

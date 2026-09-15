@@ -4,11 +4,11 @@
 
 POCKETPort 是运行在自己电脑上的采集工具与 Agent 插件。手机安装 WireGuard 并连接电脑后，用户在淘宝、小红书或微信小程序里打开需要的页面，电脑保存匹配服务的 JSON 数据。结束后交给自己的 Claude、GPT 或其他 Agent，自行决定用途。
 
-**当前版本：0.1.0 alpha。** 已做本地采集引擎和 MCP 自动化验证；本发布版本尚未完成真实手机及三款 App 的端到端验收。Windows/macOS 提供安装入口，兼容性仍需实机验证。它不是各平台官方数据导出接口，也不保证取得账户全部历史数据。
+**当前版本：0.1.1 alpha。** 已做本地采集引擎和 MCP 自动化验证；本发布版本尚未完成真实手机及三款 App 的端到端验收。Windows/macOS 提供安装入口，兼容性仍需实机验证。它不是各平台官方数据导出接口，也不保证取得账户全部历史数据。
 
 ## 下载与开始
 
-1. 在 [Releases](https://github.com/RAGG3D/POCKETPort/releases) 下载 `POCKETPort-0.1.0.zip`，解压。
+1. 在 [Releases](https://github.com/RAGG3D/POCKETPort/releases) 下载 `POCKETPort-0.1.1.zip`，解压。
 2. 电脑安装 **Python 3.12**（也支持 Python 3.13；Windows 双击安装脚本使用 3.12）。安装依赖需要联网。
 3. Windows 双击 `Install.cmd`；macOS 在终端执行 `sh Install.command`；Linux 执行 `python3 scripts/install.py`。
 4. Windows 双击 `Start-POCKETPort.cmd`；macOS/Linux 执行 `sh Start-POCKETPort.command`。本地浏览器会显示采集和配对页面。

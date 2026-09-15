@@ -1,6 +1,6 @@
-# 0.1.0 alpha
+# 0.1.1 alpha
 
-First downloadable POCKETPort release, with local WireGuard pairing, a Chinese dashboard/manual, Claude/Codex collection Skill manifests, seven stdio MCP tools, selected-host JSON/JSONP collection, and local JSON export.
+POCKETPort collection release (fixes Windows system-Python script discovery from 0.1.0), with local WireGuard pairing, a Chinese dashboard/manual, Claude/Codex collection Skill manifests, seven stdio MCP tools, selected-host JSON/JSONP collection, and local JSON export.
 
 ## Validation
 

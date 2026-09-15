@@ -5,6 +5,7 @@ from pathlib import Path
 import socket
 import subprocess
 import sys
+import sysconfig
 import tempfile
 import threading
 import time
@@ -68,7 +69,7 @@ class RuntimeTests(unittest.TestCase):
             env = dict(os.environ, POCKETPORT_SESSION=tmp)
             import importlib.util
             addon_path = importlib.util.find_spec("pocketport.addon").origin
-            executable = Path(sys.executable).parent / ("mitmdump.exe" if os.name == "nt" else "mitmdump")
+            executable = Path(sysconfig.get_path("scripts")) / ("mitmdump.exe" if os.name == "nt" else "mitmdump")
             proc = subprocess.Popen([str(executable), "--mode", f"regular@{port}", "--listen-host", "127.0.0.1",
                                      "--set", f"confdir={folder / 'ca'}", "-q", "-s", addon_path],
                                     env=env, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)

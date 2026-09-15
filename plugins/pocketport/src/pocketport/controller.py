@@ -6,6 +6,7 @@ import os
 import socket
 import subprocess
 import sys
+import sysconfig
 import threading
 import time
 import uuid
@@ -81,7 +82,7 @@ class Controller:
             write_json(self.session / "session.json", meta)
             try:
                 self._prepare_pairing(str(ip), port)
-                executable = Path(sys.executable).parent / ("mitmdump.exe" if os.name == "nt" else "mitmdump")
+                executable = Path(sysconfig.get_path("scripts")) / ("mitmdump.exe" if os.name == "nt" else "mitmdump")
                 if not executable.exists():
                     raise RuntimeError("mitmdump missing; run the installer")
                 env = os.environ.copy()

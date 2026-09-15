@@ -56,7 +56,7 @@ OpenAI 官方说明本地 Codex 宿主支持 stdio MCP；ChatGPT 桌面与本地
 
 ## 只有网页版 Claude / GPT
 
-用 POCKETPort 的本地页面采集并下载 JSON，然后在自己的聊天窗口上传文件。POCKETPort 0.1.0 不提供远程 HTTP MCP、OAuth 服务或公网隧道；网页端的远程工具入口不能直接访问此处的本地 stdio 进程。不要把本地采集控制端口直接暴露到公网。
+用 POCKETPort 的本地页面采集并下载 JSON，然后在自己的聊天窗口上传文件。POCKETPort 0.1.1 不提供远程 HTTP MCP、OAuth 服务或公网隧道；网页端的远程工具入口不能直接访问此处的本地 stdio 进程。不要把本地采集控制端口直接暴露到公网。
 
 ## 第一次对话
 
